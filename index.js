@@ -2,8 +2,8 @@ const { Engine, World, Runner, Render, Bodies, MouseConstraint, Mouse } = Matter
 
 const width = 600
 const height = 600
-const rows = 5
-const cols = 5
+const rows = 3
+const cols = 3
 
 const engine = Engine.create()
 const { world } = engine
@@ -73,7 +73,7 @@ const shuffleArray = (arr) => {
     return arr
 }
 
-const updateCells = (row, col) => {
+const initializeGridCells = (row, col) => {
     // if I have visited the cell at [row, col] then return
     if(gridArr[row][col]){
         return;
@@ -83,22 +83,46 @@ const updateCells = (row, col) => {
     gridArr[row][col] = true
 
     // assemble randomly ordered list of neighbors
-    const neighbors = [
-        [row - 1, col],
-        [row + 1, col],
-        [row, col - 1],
-        [row, col + 1]
-    ]
-    const randomNeighbors = shuffleArray(neighbors)
-
-    console.log(neighbors, randomNeighbors);
+    const neighbors = shuffleArray([
+        [row - 1, col, "up"],
+        [row, col + 1, "right"],
+        [row + 1, col, "down"],
+        [row, col - 1, "left"]
+    ])
 
     // For each neighbor:
-    // see if that neighbor is inside the grid
+    for (let neighbor of neighbors) {
+        const [nextRow, nextCol, dir] = neighbor
 
-    // if we have visited that neighbor continue to next neighbor
+        // see if that neighbor is inside the grid
+        if (nextRow < 0 || nextRow >= rows || nextCol < 0 || nextCol >= cols) {
+            continue;
+        }
 
-    // remove a wall from either horizontals or verticals (false -> true)
+        // if we have visited that neighbor continue to next neighbor
+        if (gridArr[nextRow][nextCol]) {
+            continue;
+        }
+
+        // remove a wall from either horizontals or verticals (false -> true)
+        switch(dir){
+            case "left":
+                verticals[row][col - 1] = true
+                break;
+            case "right":
+                verticals[row][col] = true
+                break;
+            case "up":
+                horizontals[row - 1][col] = true
+                break;
+            case "down":
+                horizontals[row][col] = true
+                break;
+        }
+
+        initializeGridCells(nextRow, nextCol)
+    }
 }
 
-updateCells(startRow, startCol)
+initializeGridCells(startRow, startCol)
+console.log(horizontals, verticals);
