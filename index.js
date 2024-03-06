@@ -1,17 +1,12 @@
 const { Engine, World, Runner, Render, Bodies, MouseConstraint, Mouse } = Matter;
 
-const width = 600
-const height = 600
-const rows = 3
-const cols = 3
-
 const engine = Engine.create()
 const { world } = engine
 const render = Render.create({
     element: document.body,
     engine: engine,
     options: {
-        wireframes: false,
+        wireframes: true,
         width,
         height
     }
@@ -31,98 +26,40 @@ const walls = [
 ]
 World.add(world, walls)
 
-for(let i = 0; i <= 30; i++){
+// creating some randomized rectangle shapes
+for(let i = 0; i <= 10; i++){
     const x_pos = Math.floor(Math.random() * 500) + 100
     const y_pos = Math.floor(Math.random() * 500) + 100
     const width = Math.floor(Math.random() * 60) + 20
     const height = Math.floor(Math.random() * 60) + 20
     const addedShape = Bodies.rectangle(x_pos, y_pos, width, height)
-    // console.log(addedShape);
     World.add(world, addedShape)
 }
 
-let gridArr = Array(rows)
-    .fill(null)
-    .map(() => Array(cols).fill(false))
-
-let verticals = Array(rows)
-    .fill(null)
-    .map(() => Array(cols - 1).fill(false))
-
-let horizontals = Array(rows - 1)
-    .fill(null)
-    .map(() => Array(cols).fill(false))
-
-console.log(gridArr, verticals, horizontals);
-
-const startRow = Math.floor(Math.random() * rows)
-const startCol = Math.floor(Math.random() * cols)
-
-const shuffleArray = (arr) => {
-    let counter = arr.length
-
-    while (counter > 0) {
-        const index = Math.floor(Math.random() * counter)
-
-        counter--;
-
-        const temp = arr[counter]
-        arr[counter] = arr[index]
-        arr[index] = temp
-    }
-    return arr
-}
-
-const initializeGridCells = (row, col) => {
-    // if I have visited the cell at [row, col] then return
-    if(gridArr[row][col]){
-        return;
-    }
-
-    // Mark this cell as being visited in gridArr
-    gridArr[row][col] = true
-
-    // assemble randomly ordered list of neighbors
-    const neighbors = shuffleArray([
-        [row - 1, col, "up"],
-        [row, col + 1, "right"],
-        [row + 1, col, "down"],
-        [row, col - 1, "left"]
-    ])
-
-    // For each neighbor:
-    for (let neighbor of neighbors) {
-        const [nextRow, nextCol, dir] = neighbor
-
-        // see if that neighbor is inside the grid
-        if (nextRow < 0 || nextRow >= rows || nextCol < 0 || nextCol >= cols) {
-            continue;
+// calculating and creating the horizontal and vertical lines of the maze
+horizontals.forEach((row, rowIndex) => {
+    row.forEach((open, cellIndex) => {
+        if (open) {
+            return;
+        } else {
+            const wallLength = width / cols
+            const wall_x = wallLength * cellIndex + (wallLength / 2)
+            const wall_y = (height / rows) * (rowIndex + 1)
+            const wall = Bodies.rectangle(wall_x, wall_y, wallLength, 2, { isStatic: true })
+            World.add(world, wall)
         }
-
-        // if we have visited that neighbor continue to next neighbor
-        if (gridArr[nextRow][nextCol]) {
-            continue;
+    })
+})
+verticals.forEach((col, colIndex) => {
+    col.forEach((open, cellIndex) => {
+        if (open) {
+            return;
+        } else {
+            const wallLength = height / cols
+            const wall_x = (height / rows) * (colIndex + 1)
+            const wall_y = wallLength * cellIndex + (wallLength / 2)
+            const wall = Bodies.rectangle(wall_x, wall_y, 2, wallLength, { isStatic: true })
+            World.add(world, wall)
         }
-
-        // remove a wall from either horizontals or verticals (false -> true)
-        switch(dir){
-            case "left":
-                verticals[row][col - 1] = true
-                break;
-            case "right":
-                verticals[row][col] = true
-                break;
-            case "up":
-                horizontals[row - 1][col] = true
-                break;
-            case "down":
-                horizontals[row][col] = true
-                break;
-        }
-
-        initializeGridCells(nextRow, nextCol)
-    }
-}
-
-initializeGridCells(startRow, startCol)
-console.log(horizontals, verticals);
+    })
+})
