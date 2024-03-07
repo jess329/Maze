@@ -1,7 +1,7 @@
 const width = 600
 const height = 600
-const rows = width / 200
-const cols = height / 200
+const rows = 15
+const cols = 15
 
 let gridArr = Array(rows)
     .fill(null)
@@ -87,4 +87,4 @@ const initializeGridCells = (row, col) => {
 }
 
 initializeGridCells(startRow, startCol)
-console.log(horizontals, verticals);
+// console.log(horizontals, verticals);
