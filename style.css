@@ -1,0 +1,19 @@
+
+
+.btn-container {
+    display: grid;
+    place-content: center;
+    gap: 1rem;
+}
+.btn-container > * {
+    width: fit-content;
+    height: 50px;
+    display: grid;
+    place-content: center;
+    padding: 0.5rem 1rem;
+    font-size: 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-family: 'Secular One';
+    background-image: linear-gradient(to right, #a8ff78, #78ffd6);
+}

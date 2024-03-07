@@ -1,6 +1,7 @@
-const { Engine, World, Runner, Render, Bodies, MouseConstraint, Mouse, Body } = Matter;
+const { Engine, World, Runner, Render, Bodies, MouseConstraint, Mouse, Body, Events } = Matter;
 
 const engine = Engine.create()
+engine.world.gravity.y = 0
 const { world } = engine
 const render = Render.create({
     element: document.body,
@@ -41,7 +42,11 @@ horizontals.forEach((row, rowIndex) => {
         } else {
             const wall_x = cellLength * cellIndex + (cellLength / 2)
             const wall_y = cellLength * (rowIndex + 1)
-            const wall = Bodies.rectangle(wall_x, wall_y, cellLength, 5, { isStatic: true })
+            const wall = Bodies.rectangle(wall_x, wall_y, cellLength, 5, 
+            { 
+                isStatic: true,
+                label: "wall" 
+            })
             World.add(world, wall)
         }
     })
@@ -53,7 +58,11 @@ verticals.forEach((col, colIndex) => {
         } else {
             const wall_x = cellLength * (colIndex + 1)
             const wall_y = cellLength * cellIndex + (cellLength / 2)
-            const wall = Bodies.rectangle(wall_x, wall_y, 5, cellLength, { isStatic: true })
+            const wall = Bodies.rectangle(wall_x, wall_y, 5, cellLength, 
+                { 
+                    isStatic: true,
+                    label: "wall" 
+                })
             World.add(world, wall)
         }
     })
@@ -64,12 +73,14 @@ const goal = Bodies.rectangle(
     height - (cellLength / 2),
     cellLength / 2,
     cellLength / 2,
-    { isStatic: true }
+    { isStatic: true, 
+    label: "goal" }
 )
 const ball = Bodies.circle(
     cellLength / 2,
     cellLength / 2,
-    cellLength / 4
+    cellLength / 4,
+    { label: "ball" }
 )
 World.add(world, [goal, ball])
 
@@ -96,3 +107,23 @@ document.addEventListener("keydown", (event) => {
             break;
     }
 })
+
+const userWon = () => {
+    world.gravity.y = 1
+    world.bodies.forEach(body => {
+        if (body.label === "wall" || body.label === "goal") {
+            Body.setStatic(body, false)
+        }
+    })
+}
+
+Events.on(engine, "collisionStart", event => {
+    event.pairs.forEach(collision => {
+        const body1 = collision.bodyA
+        const body2 = collision.bodyB
+        if (body1.label === "goal") {
+            console.log("goal reached");
+            userWon()
+        }
+    })
+}) 

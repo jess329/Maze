@@ -1,7 +1,7 @@
 const width = 600
 const height = 600
-const rows = 15
-const cols = 15
+const rows = 5
+const cols = 5
 
 let gridArr = Array(rows)
     .fill(null)
