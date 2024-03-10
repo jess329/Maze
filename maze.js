@@ -1,7 +1,9 @@
-const width = 600
-const height = 600
+const width = window.innerWidth
+const height = window.innerHeight * 0.9
 const rows = 5
 const cols = 5
+const unitWidth = width / cols
+const unitHeight = height / rows
 
 let gridArr = Array(rows)
     .fill(null)

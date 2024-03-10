@@ -7,7 +7,7 @@ const render = Render.create({
     element: document.body,
     engine: engine,
     options: {
-        wireframes: true,
+        wireframes: false,
         width,
         height
     }
@@ -34,18 +34,20 @@ for(let i = 0; i <= 10; i++){
 }
 
 // calculating and creating the horizontal and vertical lines of the maze
-const cellLength = width / cols
 horizontals.forEach((row, rowIndex) => {
     row.forEach((open, cellIndex) => {
         if (open) {
             return;
         } else {
-            const wall_x = cellLength * cellIndex + (cellLength / 2)
-            const wall_y = cellLength * (rowIndex + 1)
-            const wall = Bodies.rectangle(wall_x, wall_y, cellLength, 5, 
+            const wall_x = unitWidth * cellIndex + (unitWidth / 2)
+            const wall_y = unitHeight * rowIndex + unitHeight
+            const wall = Bodies.rectangle(wall_x, wall_y, unitWidth, 5, 
             { 
                 isStatic: true,
-                label: "wall" 
+                label: "wall", 
+                render: {
+                    fillStyle: "red"
+                }
             })
             World.add(world, wall)
         }
@@ -56,12 +58,15 @@ verticals.forEach((col, colIndex) => {
         if (open) {
             return;
         } else {
-            const wall_x = cellLength * (colIndex + 1)
-            const wall_y = cellLength * cellIndex + (cellLength / 2)
-            const wall = Bodies.rectangle(wall_x, wall_y, 5, cellLength, 
+            const wall_x = unitWidth * colIndex + unitWidth 
+            const wall_y = unitHeight * cellIndex + (unitHeight / 2)
+            const wall = Bodies.rectangle(wall_x, wall_y, 5, unitHeight, 
                 { 
                     isStatic: true,
-                    label: "wall" 
+                    label: "wall", 
+                    render: {
+                        fillStyle: "red"
+                    }
                 })
             World.add(world, wall)
         }
@@ -69,18 +74,30 @@ verticals.forEach((col, colIndex) => {
 })
 
 const goal = Bodies.rectangle(
-    width - (cellLength / 2),
-    height - (cellLength / 2),
-    cellLength / 2,
-    cellLength / 2,
-    { isStatic: true, 
-    label: "goal" }
+    width - (unitWidth / 2),
+    height - (unitHeight / 2),
+    unitWidth / 2,
+    unitHeight / 2,
+    { 
+        isStatic: true, 
+        label: "goal",
+        render: {
+            fillStyle: "#46c24e"
+        } 
+    }
 )
+
+const ballRadius = unitWidth < unitHeight ? unitWidth / 4 : unitHeight / 4
 const ball = Bodies.circle(
-    cellLength / 2,
-    cellLength / 2,
-    cellLength / 4,
-    { label: "ball" }
+    unitWidth / 2,
+    unitHeight / 2,
+    ballRadius,
+    { 
+        label: "ball",
+        render: {
+            fillStyle: "#2f69fa"
+        } 
+    }
 )
 World.add(world, [goal, ball])
 
