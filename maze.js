@@ -89,4 +89,3 @@ const initializeGridCells = (row, col) => {
 }
 
 initializeGridCells(startRow, startCol)
-// console.log(horizontals, verticals);

@@ -23,16 +23,6 @@ const walls = [
 ]
 World.add(world, walls)
 
-// creating some randomized rectangle shapes
-for(let i = 0; i <= 10; i++){
-    const x_pos = Math.floor(Math.random() * 500) + 100
-    const y_pos = Math.floor(Math.random() * 500) + 100
-    const width = Math.floor(Math.random() * 60) + 20
-    const height = Math.floor(Math.random() * 60) + 20
-    const addedShape = Bodies.rectangle(x_pos, y_pos, width, height)
-    // World.add(world, addedShape)
-}
-
 // calculating and creating the horizontal and vertical lines of the maze
 horizontals.forEach((row, rowIndex) => {
     row.forEach((open, cellIndex) => {
@@ -126,6 +116,9 @@ document.addEventListener("keydown", (event) => {
 })
 
 const userWon = () => {
+    const winner = document.querySelector(".winner")
+    winner.classList.remove("hidden")
+    
     world.gravity.y = 1
     world.bodies.forEach(body => {
         if (body.label === "wall" || body.label === "goal") {
