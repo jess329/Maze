@@ -1,7 +1,7 @@
 const width = window.innerWidth
-const height = window.innerHeight * 0.9
-const rows = 5
-const cols = 5
+const height = window.innerHeight
+const rows = 10
+const cols = 10
 const unitWidth = width / cols
 const unitHeight = height / rows
 
@@ -16,8 +16,6 @@ let verticals = Array(rows)
 let horizontals = Array(rows - 1)
     .fill(null)
     .map(() => Array(cols).fill(false))
-
-// console.log(gridArr, verticals, horizontals);
 
 const startRow = Math.floor(Math.random() * rows)
 const startCol = Math.floor(Math.random() * cols)
@@ -69,19 +67,14 @@ const initializeGridCells = (row, col) => {
         }
 
         // remove a wall from either horizontals or verticals (false -> true)
-        switch(dir){
-            case "left":
-                verticals[row][col - 1] = true
-                break;
-            case "right":
-                verticals[row][col] = true
-                break;
-            case "up":
-                horizontals[row - 1][col] = true
-                break;
-            case "down":
-                horizontals[row][col] = true
-                break;
+        if (dir === "left") {
+            verticals[row][col - 1] = true
+        } else if (dir === "right") {
+            verticals[row][col] = true
+        } else if (dir === "up") {
+            horizontals[row - 1][col] = true
+        } else if (dir === "down") {
+            horizontals[row][col] = true
         }
 
         initializeGridCells(nextRow, nextCol)

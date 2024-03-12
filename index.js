@@ -29,7 +29,7 @@ horizontals.forEach((row, rowIndex) => {
         if (open) {
             return;
         } else {
-            const wall_x = unitWidth * cellIndex + (unitWidth / 2)
+            const wall_x = unitWidth * cellIndex + unitWidth / 2
             const wall_y = unitHeight * rowIndex + unitHeight
             const wall = Bodies.rectangle(wall_x, wall_y, unitWidth, 5, 
             { 
@@ -48,8 +48,8 @@ verticals.forEach((col, colIndex) => {
         if (open) {
             return;
         } else {
-            const wall_x = unitWidth * colIndex + unitWidth 
-            const wall_y = unitHeight * cellIndex + (unitHeight / 2)
+            const wall_x = unitWidth * cellIndex + unitWidth 
+            const wall_y = unitHeight * colIndex + unitHeight / 2
             const wall = Bodies.rectangle(wall_x, wall_y, 5, unitHeight, 
                 { 
                     isStatic: true,
