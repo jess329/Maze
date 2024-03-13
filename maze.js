@@ -90,7 +90,7 @@ const createMaze = (index) => {
     return [horizontals, verticals, unitWidth, unitHeight]
 }
 
-let currentLevelIndex = 9
+let currentLevelIndex = 0
 let mazeArr = createMaze(currentLevelIndex)
 
 // console.log(horizontals, verticals);
