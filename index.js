@@ -125,7 +125,7 @@ const drawMaze = (arr) => {
         winner.classList.remove("hidden")
         const winText = winner.querySelector("h1")
         if(currentLevelIndex == 9) {
-            winText.innerText = "You completed the Game"
+            winText.innerText = "You Completed The Game!"
         } else {
             winText.innerText = `Level ${currentLevelIndex + 1} Passed!` 
         }
