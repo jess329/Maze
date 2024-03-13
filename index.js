@@ -1,4 +1,4 @@
-const { Engine, World, Runner, Render, Bodies, MouseConstraint, Mouse, Body, Events } = Matter;
+const { Engine, World, Runner, Render, Bodies, MouseConstraint, Mouse, Body, Events, Composite } = Matter;
 
 const engine = Engine.create()
 engine.world.gravity.y = 0
@@ -24,6 +24,7 @@ const walls = [
 World.add(world, walls)
 
 const drawMaze = (arr) => {
+    
     let horizontals, verticals, unitWidth, unitHeight;
     [horizontals, verticals, unitWidth, unitHeight] = arr
 
@@ -135,17 +136,13 @@ const drawMaze = (arr) => {
     let nextButtonClicked = false
     const createNextLevelMaze = () => {
         world.gravity.y = 0
-        world.bodies.forEach(body => {
-            if (body.label === "wall" || body.label === "goal" || body.label === "ball") {
-                World.remove(world, body)
-            }
-        })
+        Composite.clear(world, keepStatic = true)
         // doesn't remove the fallen objects -> bug
     
         winner.classList.add("hidden")
     
-        console.log(currentLevelIndex);
-        const newMazeArr = createMaze(currentLevelIndex++)
+        currentLevelIndex++
+        const newMazeArr = createMaze(currentLevelIndex)
         drawMaze(newMazeArr)
     }
     
