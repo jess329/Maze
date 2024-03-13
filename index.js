@@ -123,6 +123,12 @@ const drawMaze = (arr) => {
     const winner = document.querySelector(".winner")
     const userWon = () => {
         winner.classList.remove("hidden")
+        const winText = winner.querySelector("h1")
+        if(currentLevelIndex == 9) {
+            winText.innerText = "You completed the Game"
+        } else {
+            winText.innerText = `Level ${currentLevelIndex + 1} Passed!` 
+        }
         
         world.gravity.y = 1
         world.bodies.forEach(body => {

@@ -3,7 +3,7 @@ const height = window.innerHeight
 
 const createMaze = (index) => {
     
-    const gridLevels = [3, 5, 7, 9, 12, 15, 17, 19, 22, 25]
+    const gridLevels = [5, 7, 9, 12, 15, 17, 20, 23, 26, 30]
     let rows = gridLevels[index]
     let cols = gridLevels[index]
     const unitWidth = width / cols
@@ -90,7 +90,7 @@ const createMaze = (index) => {
     return [horizontals, verticals, unitWidth, unitHeight]
 }
 
-let currentLevelIndex = 0
+let currentLevelIndex = 9
 let mazeArr = createMaze(currentLevelIndex)
 
 // console.log(horizontals, verticals);
